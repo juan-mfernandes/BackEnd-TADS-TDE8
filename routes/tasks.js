@@ -1,5 +1,5 @@
 const express = require('express');
-const { findTasks, findTaksStatus, createTask, updateTask, deleteTask } = require('../project/db/tasks');
+const { findTasks, findOnlyTask ,findTaksStatus, createTask, updateTask, deleteTask } = require('../project/db/tasks');
 const taskRouters = express.Router();
 
 taskRouters.get("/tasks", async(req, res) => {
@@ -12,6 +12,13 @@ taskRouters.get("/tasks", async(req, res) => {
     const allTasks = await findTasks();
     if(!allTasks) return res.status(404).send("Tasks NOT FOUND.");
     return res.json(allTasks);
+});
+
+taskRouters.get("/tasks/:id", async(req, res) => {
+    const id = req.params.id;
+    const task = await findOnlyTask(id);
+    if(!task) return res.status(404).send(`id ${id} Not Found`);
+    res.json(task);
 });
 
 taskRouters.post("/tasks/", async(req, res) => {

@@ -1,5 +1,15 @@
 const { prisma } = require('./prisma');
 
+const findOnlyTask = async (idr) => {
+    const id = Number(idr);
+    const task = await prisma.task.findUnique({
+        where: {
+            id 
+        }
+    });
+    return task;
+}
+
 const findTasks = async() => {
     const tasks = await prisma.task.findMany({
         orderBy: {
@@ -65,5 +75,6 @@ module.exports = {
     findTaksStatus,
     createTask,
     updateTask,
-    deleteTask
+    deleteTask,
+    findOnlyTask
 }
